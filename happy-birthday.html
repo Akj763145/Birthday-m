@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7e1ff; /* Light purple background */
+            background-image: linear-gradient(135deg, #f7e1ff 0%, #e0c3fc 100%);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            transition: all 0.5s ease-in-out;
+        }
+
+        h1.title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            color: #d8b2ff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: bounceIn 1s ease-out;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            h1.title {
+                font-size: 5rem;
+            }
+        }
+
+        .message {
+            font-size: 1.25rem;
+            color: #333;
+            line-height: 1.6;
+            animation: fadeIn 2s ease-in;
+            font-weight: 500;
+        }
+
+        .gift-box {
+            position: absolute;
+            bottom: -50px;
+            right: 20%;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            z-index: 20;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .gift-box img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box:hover img {
+            transform: scale(1.1);
+        }
+        
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            position: relative;
+            max-width: 90%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: #555;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffb7b2;
+            opacity: 0;
+            border-radius: 50%;
+            transform: translateY(0) rotate(0);
+            animation-timing-function: cubic-bezier(0.5, 0.5, 0.5, 0.5);
+            animation: fall 5s linear forwards;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh) rotate(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh) rotate(1080deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-200 via-pink-200 to-purple-300 min-h-screen flex flex-col justify-center items-center p-4">
+
+    <!-- Confetti Container -->
+    <div class="confetti"></div>
+
+    <div class="container relative rounded-3xl p-8 max-w-lg mx-auto bg-white/60 shadow-lg backdrop-blur-lg">
+        <h1 class="title text-5xl md:text-6xl font-extrabold text-purple-600 mb-4 tracking-wide text-center">Happy Birthday!</h1>
+        <p class="message text-lg md:text-xl text-gray-800 leading-relaxed text-center">Wishing you a day filled with joy, laughter, and everything that makes you happiest. May your year be as wonderful as you are!</p>
+    </div>
+
+    <!-- The Gift Box -->
+    <div id="gift-box" class="gift-box" onclick="openGift()">
+        <img src="https://placehold.co/100x100/fce38a/333?text=Gift" alt="Gift Box">
+    </div>
+
+    <!-- Pop-up Message -->
+    <div id="popup" class="popup">
+        <div class="popup-content bg-white p-8 rounded-2xl shadow-xl relative">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2 class="text-3xl font-bold text-pink-500 mb-4">A Special Message</h2>
+            <p class="text-gray-700 text-lg leading-relaxed">Hope your birthday is truly amazing! You deserve all the best today and always. Love,<br>Your Name</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to create and drop confetti
+        function createConfetti() {
+            const confettiContainer = document.querySelector('.confetti');
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+            
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.left = `${Math.random() * 100}vw`;
+                piece.style.width = `${5 + Math.random() * 10}px`;
+                piece.style.height = `${5 + Math.random() * 10}px`;
+                piece.style.animationDuration = `${2 + Math.random() * 3}s`;
+                piece.style.animationDelay = `${-Math.random() * 5}s`;
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confettiContainer.appendChild(piece);
+            }
+        }
+
+        // Function to open the gift box and show the popup
+        function openGift() {
+            const popup = document.getElementById('popup');
+            
+            // Add a small delay before showing the popup for a smoother transition
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 300);
+        }
+        
+        // Function to close the popup
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.remove('show');
+        }
+
+        // Initialize confetti on window load
+        window.onload = function() {
+            createConfetti();
+        };
+
+    </script>
+</body>
+</html>
